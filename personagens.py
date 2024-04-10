@@ -15,12 +15,13 @@ class Player:
                f'Vida: {self.vida}\n'
                f'Ataque: {self.ataque}')
     
-    def battle(self, inimigo):
+    def playerbattle(self, inimigo):
         inimigo.vida -= self.ataque
         print(f'Você ataca o inimigo! \n'
               f'Com um corte limpo, você causa {jogador.ataque} de dano!\n'
               f'Vida atual do inimigo {inimigo.vida}')
  
+# Classe base dos monstros
 class Monstro:
     def __init__(self, nome, vida_max, vida, ataque, level, exp) -> None:
         self.nome = nome
@@ -30,7 +31,14 @@ class Monstro:
         self.level = level
         self.exp = exp
 
+    def monstrobattle(self, jogador):
+        jogador.vida -= monstro_escolhido.ataque
+        print(f'Você ataca o inimigo! \n'
+              f'Com um corte limpo, você causa {monstro_escolhido.ataque} de dano!\n'
+              f'Vida atual do inimigo {jogador.vida}')
 
+
+# Função menu
 def menu():
     while True:
         print('1 - Atacar'
@@ -44,11 +52,20 @@ def menu():
         else:
             print("Opção inválida!")
 
+# Escolhendo a classe jogável e seu nome.
+jogador = ''
 def heroi():
     print(arqueiro)
     print(barbaro)
     print(mago)
-    
+    escolha = int(input('Escolha seu herói: '))
+    if escolha == 1:
+        jogador = arqueiro
+    elif escolha == 2:
+        jogador = barbaro
+    elif escolha == 3:
+        jogador = mago
+    print(f'Você escolheu seu héroi, agora se tornará um com ele! Seja bem vindo {jogador.nome}')
 
 arqueiro = Player('Legolas', 20, 20, 8, 1, 20)
 barbaro = Player('Conan', 30, 30, 5, 1, 20)
@@ -65,3 +82,4 @@ nomes, porcentagens = zip(*lista_itens)
 monstro_escolhido = random.choices(nomes, weights=porcentagens, k=1)[0]
 
 heroi()
+jogador.playerbattle(monstro_escolhido)
