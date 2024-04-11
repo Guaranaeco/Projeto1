@@ -97,15 +97,18 @@ monstro_escolhido = choices(nomes, weights=porcentagens, k=1)[0]
 
 
 # TESTANDO
-jogador = heroi()
+
 '''print(f'Você achou um {monstro_escolhido.nome}')
 print('---------------')
 print(jogador.battle(monstro_escolhido))
 print('---------------')
 print(monstro_escolhido.battle(jogador))
 '''
-while True:
-    if monstro_escolhido.vida > 0:
-        jogador.battle(monstro_escolhido)
-    else:
-        monstro_escolhido = choices(nomes, weights=porcentagens, k=1)[0]
+# Imprimindo os status lado a lado
+print(arqueiro)
+for player in [barbaro, mago]:
+    print(f'{player.nome}', end='  ')
+    print(f'{player.vida}', end='  ')
+    print(f'{player.vida_max}', end='  ')
+    print(f'{player.ataque}', end='  ')
+    print(f'{player.nome}', end='  ')
