@@ -23,13 +23,44 @@ class Player:
     
     # Método de batalha do jogador
     def battle(self, inimigo):
-        dano = randint(int(self.ataque * 0.60), int(self.ataque * 1.20))
-        inimigo.vida -= dano
-        print(inimigo.nome)
-        print(f'Você ataca o inimigo! \n'
-              f'Com um corte limpo, você causa {dano} de dano!\n'
-              f'Vida atual do inimigo {inimigo.vida}')
- 
+        while True:
+            print('1. Ataque\n'
+                  '2. Fugir\n')
+            escolha = int(input('Escolha: '))
+            if escolha == 1:
+                dano = randint(int(self.ataque * 0.60), int(self.ataque * 1.20))
+                inimigo.vida -= dano
+                if inimigo.vida > 0:
+                    print(f'Você ataca o inimigo! {inimigo.nome} \n'
+                        f'Com um corte limpo, você causa {dano} de dano!\n'
+                        f'Vida atual do inimigo {cor(96,inimigo.vida)}')
+                if inimigo.vida <= 0:
+                    inimigo.vida = 0
+                    print(f'Vida atual do inimigo {cor(96, inimigo.vida)}')
+                    print(f'Você matou o {inimigo.nome}')
+                    self.exp += inimigo.exp
+                    print(f'Você recebeu {self.exp} de exp')
+                    if self.exp >= self.exp_max:
+                        sobra_xp = self.exp - self.exp_max
+                        self.level += 1
+                        print('Parabéns, você upou!')
+                        self.ataque += 3
+                        self.vida += 10
+                        self.vida_max += 10
+                        self.exp_max = int(self.exp_max * 1.50)
+                        self.exp = sobra_xp
+            elif escolha == 2:
+                    fugir = randint(0, 10)
+                    print(fugir)
+                    if fugir > 8:
+                        print('Você fugiu!')
+                        break
+                    else:
+                        print(f'Você tenta fugir... mas o {inimigo.nome} te ataca pelas costas')
+                        self.vida -= inimigo.ataque 
+                        print(f'Você sofreu {inimigo.ataque} de dano!\nVida:{self.vida}')
+
+
  # Declarando classe principal dos monstros
 class Monstro:
     def __init__(self, nome, vida_max, vida, ataque, level, exp) -> None:
@@ -52,63 +83,17 @@ def cor(cor, text):
     return f'\033[{cor}m{text}\033[m'
 
 
-# Menu do jogador a cada jogada.
-def menu():
-    while True:
-        print('1 - Atacar'
-              '2 - Status')
-        if escolha == 1:
-            heroi.battle(monstro_escolhido)
-            break
-        elif escolha == 2:
-            print(heroi)
-            break
-        else:
-            print("Opção inválida!")
-
-# Escolhendo personagem para a campanha
-def heroi():
-    print(arqueiro)
-    print(barbaro)
-    print(mago)
-    escolha = int(input('Escolha seu herói: '))
-    if escolha == 1:
-        return arqueiro
-    elif escolha == 2:
-        return barbaro
-    elif escolha == 3:
-        return mago
-
 
 # Instâncias de classes
 arqueiro = Player('Legolas', 20, 20, 8, 1, 0, 20)
 barbaro = Player('Conan', 30, 30, 5, 1, 0, 20)
 mago = Player('Donald', 15, 15, 11, 1, 0, 20)
 
-# Instâncias de monstros
-morcego = Monstro('morcego', 5, 5, 2, 1, 5)
-esqueleto = Monstro('esqueleto', 20, 20, 5, 1, 10)
-minotauro = Monstro('minotauro', 30, 30, 10, 1, 20)
 
 # Lista de monstros com suas porcentagens de aparecimento (Até o momento)
-lista_itens = [[Monstro('morcego', 5, 5, 2, 1, 5), 0.33], [Monstro('esqueleto', 20, 20, 5, 1, 10), 0.33], [Monstro('minotauro', 30, 30, 10, 1, 20), 0.33]]
-nomes, porcentagens = zip(*lista_itens)
-monstro_escolhido = choices(nomes, weights=porcentagens, k=1)[0]
+def monstro_aleatorio():
+    lista_itens = [[Monstro('morcego', 5, 5, 2, 1, 22), 0.50], [Monstro('esqueleto', 20, 20, 5, 1, 22), 0.40], [Monstro('minotauro', 30, 30, 10, 1, 22), 0.10]]
+    nomes, porcentagens = zip(*lista_itens)
+    return choices(nomes, weights=porcentagens, k=1)[0]
 
 
-# TESTANDO
-
-'''print(f'Você achou um {monstro_escolhido.nome}')
-print('---------------')
-print(jogador.battle(monstro_escolhido))
-print('---------------')
-print(monstro_escolhido.battle(jogador))
-'''
-# Imprimindo os status lado a lado
-print(arqueiro)
-for player in [barbaro, mago]:
-    print(f'{player.nome}', end='  ')
-    print(f'{player.vida}', end='  ')
-    print(f'{player.vida_max}', end='  ')
-    print(f'{player.ataque}', end='  ')
-    print(f'{player.nome}', end='  ')
